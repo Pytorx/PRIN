@@ -1,0 +1,14 @@
+
+Zusatzaufgabe
+
+Das Programm der Aufgabe 5 von Seite 9 soll verändert werden:
+
+Eine Lehrkraft mit sehr speziellen Ansichten bewertet die 
+Schüler nach dem Zufallsprinzip. Die Note im Bereich 1-6 
+soll also zufällig ermittelt und als Wort (z. B. "gut")
+ausgegeben werden.
+
+Erstellen Sie den Programmcode.
+
+
+

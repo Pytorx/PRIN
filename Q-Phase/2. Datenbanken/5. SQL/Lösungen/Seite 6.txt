@@ -1,0 +1,53 @@
+use test;
+DROP TABLE klasse0815;
+
+# ----- A U F G A B E  1 -----
+CREATE TABLE klasse0815 (ID INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), vorname VARCHAR(20), note1 INT, note2 INT, note3 INT, PRIMARY KEY (ID));
+INSERT INTO klasse0815 (name, vorname, note1, note2) VALUES ("Adler", "Horst",2,1);
+INSERT INTO klasse0815 (name, vorname) VALUES ("Birne", "Helene");
+INSERT INTO klasse0815 (name, vorname, note1, note2) VALUES ("Voll", "Horst",6,3);
+INSERT INTO klasse0815 (name, vorname, note1, note2) VALUES ("Blöd", "Hein",5,3);
+SELECT * FROM klasse0815;
+
+# ----- A U F G A B E  2 -----
+ALTER TABLE klasse0815 DROP note3;
+
+# ----- A U F G A B E  3 -----
+UPDATE klasse0815 SET note2 = null;
+SELECT * FROM klasse0815;
+
+# ----- A U F G A B E  4 -----
+SELECT AVG(note1) FROM klasse0815;
+
+# ----- A U F G A B E  5 -----
+SELECT count(note1) FROM klasse0815;
+# andere Variante: SELECT count(*) FROM klasse0815 WHERE note1 IS NOT NULL;
+
+# ----- A U F G A B E  6 -----
+SELECT  (count(*) - count(note1)) FROM klasse0815;
+# andere Variante: SELECT count(*) FROM klasse0815 WHERE note1 IS NULL;	
+
+# ----- A U F G A B E  7 -----
+SELECT MIN(note1) FROM klasse0815;
+
+# ----- A U F G A B E  8 -----
+SELECT name,vorname FROM klasse0815 WHERE (note1 = (SELECT MIN(note1) FROM klasse0815));
+
+# ----- A U F G A B E  9 -----
+SELECT count(DISTINCT vorname) FROM klasse0815;
+
+# ----- A U F G A B E  10 -----
+INSERT INTO klasse0815 (name) VALUES ("01234567890123456789abc");
+
+# ----- A U F G A B E  11 -----
+ALTER TABLE klasse0815 CHANGE name name VARCHAR(25);
+
+# ----- A U F G A B E  12 -----
+ALTER TABLE klasse0815 ADD geboren DATE;
+UPDATE klasse0815 SET geboren = '1990-12-31' WHERE ID = 1;
+
+# ----- A U F G A B E  13 -----
+ALTER TABLE klasse0815 ADD geaendert TIMESTAMP;
+UPDATE klasse0815 SET note1 = 3 WHERE ID = 2;
+Select * FROM klasse0815;
+

@@ -1,0 +1,51 @@
+
+
+CREATE DATABASE kundenverwaltung;
+use kundenverwaltung;
+
+DROP TABLE kunden;
+DROP TABLE berater;
+
+CREATE TABLE berater (b_ID INT NOT NULL AUTO_INCREMENT, nachname VARCHAR(20), vorname VARCHAR( 20), stundensatz DOUBLE (8,2), PRIMARY KEY (b_ID)) ENGINE=InnoDB;
+INSERT INTO berater (nachname, vorname, stundensatz) VALUES ("Meier", "Helena", 50.00);
+INSERT INTO berater (nachname, vorname, stundensatz) VALUES ("Fuchs", "Ingo", 45.00);
+INSERT INTO berater (nachname, vorname, stundensatz) VALUES ("Müller", "John", 60.00);
+INSERT INTO berater (nachname, vorname, stundensatz) VALUES ("Schulz", "Elisabeth", 45.00);
+
+CREATE TABLE kunden (k_ID INT NOT NULL AUTO_INCREMENT, nachname VARCHAR(20), vorname VARCHAR( 20), b_ID INT, PRIMARY KEY (k_ID), FOREIGN KEY (b_ID) REFERENCES berater(b_ID) 
+ON DELETE NO ACTION) ENGINE=InnoDB;
+
+INSERT INTO kunden (nachname, vorname, b_ID) VALUES ("Schmitt", "Emil", 1);
+INSERT INTO kunden (nachname, vorname, b_ID) VALUES ("Klein", "Hans-Dieter", 2);
+INSERT INTO kunden (nachname, vorname, b_ID) VALUES ("Schmidt", "Johanna", 1);
+INSERT INTO kunden (nachname, vorname, b_ID) VALUES ("Schmidt", "Hans", 1);
+INSERT INTO kunden (nachname, vorname, b_ID) VALUES ("Huber", "Markus", null);
+
+SELECT * FROM kunden;
+SELECT * FROM berater;
+
+SELECT * FROM kunden, berater WHERE (kunden.b_ID = berater.b_ID);
+
+SELECT * FROM kunden INNER JOIN berater ON (kunden.b_ID = berater.b_ID);
+
+SELECT * FROM kunden LEFT JOIN berater ON (kunden.b_ID = berater.b_ID);
+
+SELECT * FROM kunden RIGHT JOIN berater ON (kunden.b_ID = berater.b_ID);
+
+SELECT * FROM kunden INNER JOIN berater USING (b_ID);
+
+SELECT * FROM kunden LEFT JOIN berater USING (b_ID);
+
+SELECT * FROM kunden RIGHT JOIN berater USING (b_ID);
+
+
+
+SELECT berater.nachname, berater.vorname FROM kunden INNER JOIN berater USING(b_ID) WHERE (kunden.k_ID = 1);
+
+SELECT COUNT(*) FROM kunden INNER JOIN berater USING(b_ID) WHERE (berater.stundensatz > 45);
+
+SELECT kunden.nachname, kunden.vorname FROM kunden INNER JOIN berater USING(b_ID) WHERE (berater.stundensatz > 45) ORDER BY kunden.nachname, kunden.vorname;
+
+
+
+

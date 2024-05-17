@@ -1,0 +1,50 @@
+# ----- A U F G A B E  1 -----
+
+USE test;
+
+
+# ----- A U F G A B E  2 -----
+
+SHOW TABLES;
+DROP TABLE meineListe;
+
+
+# ----- A U F G A B E  3 -----
+
+CREATE TABLE meineListe (ID INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), vorname VARCHAR(20), PRIMARY KEY (ID));
+	
+INSERT INTO meineListe (name, vorname) VALUES ("Kastl", "Ruth");
+
+SELECT * FROM meineListe;
+
+DESCRIBE meineListe;
+
+
+# ----- A U F G A B E  4 -----
+
+INSERT INTO meineListe (name, vorname) VALUES ("Adler", "Horst");
+
+INSERT INTO meineListe (name, vorname) VALUES ("Voll", "Horst");
+
+
+# ----- A U F G A B E  5 -----
+
+SELECT name FROM meineListe;
+SELECT name, vorname FROM meineListe;
+SELECT vorname, name FROM meineListe;
+
+
+# ----- A U F G A B E  6 -----
+
+SELECT DISTINCT vorname FROM meineListe;
+
+
+# ----- A U F G A B E  7 -----
+
+DELETE FROM meineListe WHERE ID = 2;
+
+
+# ----- A U F G A B E  8 -----
+
+DROP TABLE meineListe;
+

@@ -1,0 +1,69 @@
+USE test; 
+DROP TABLE klasse0815, klasse0815a;
+
+# ----- A U F G A B E  1 -----
+CREATE TABLE klasse0815 (ID INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), vorname VARCHAR( 20), note INT, PRIMARY KEY (ID));
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Adler", "Horst", 5);
+INSERT INTO klasse0815 (name, vorname) VALUES ("Birne", "Thomas");
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Voll", "Horst", 6);
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Blöd", "Hein", 5);
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Birne", "Helene", 4);
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Rostock", "Jennifer", 3);
+INSERT INTO klasse0815 (name, vorname, note) VALUES ("Rostock", "Hans A.", 1);
+SELECT * FROM klasse0815;
+
+# ----- A U F G A B E  2 -----
+SELECT * FROM klasse0815 ORDER BY name, vorname;
+SELECT * FROM klasse0815 WHERE vorname = "Horst" ;
+SELECT * FROM klasse0815 WHERE (name LIKE "B%") ORDER BY name,vorname;
+
+# ----- A U F G A B E  3 -----
+UPDATE klasse0815 SET name = "Kiel" WHERE ID = 6;
+
+# ----- A U F G A B E  4 -----
+ALTER TABLE klasse0815 RENAME klasse0815a;
+
+# ----- A U F G A B E  5 -----
+INSERT INTO klasse0815a (name, vorname) VALUES ("Selassie", "Haile");
+
+# ----- A U F G A B E  6 -----
+DELETE FROM klasse0815a WHERE ID = 4;
+SELECT * FROM klasse0815a;
+
+# ----- A U F G A B E  7 -----
+UPDATE klasse0815a SET note = 2 WHERE ID = 2;
+UPDATE klasse0815a SET note = 2 WHERE ID = 8;
+# andere Variante: UPDATE klasse0815a SET note = 2 WHERE (ID = 2 OR ID = 8);
+SELECT * FROM klasse0815a;
+
+# ----- A U F G A B E  8 -----
+SELECT name,vorname FROM klasse0815a WHERE (note <= 4 );
+
+# ----- A U F G A B E  9 -----
+SELECT count(*) FROM klasse0815a;
+SELECT count(*) FROM klasse0815a WHERE (note > 4);
+
+# ----- A U F G A B E  10 -----
+SELECT AVG (note) FROM klasse0815a;
+
+# ----- A U F G A B E  11 -----
+SELECT * FROM klasse0815a ORDER BY note;
+
+# ----- A U F G A B E  12 -----
+SELECT * FROM klasse0815a ORDER BY note DESC;
+
+# ----- A U F G A B E  13 -----
+ALTER TABLE klasse0815a CHANGE note note1 INT;
+ALTER TABLE klasse0815a ADD note2 INT;
+
+# ----- A U F G A B E  14 -----
+UPDATE klasse0815a SET note2 = 1 WHERE ID = 1;
+UPDATE klasse0815a SET note2 = 3 WHERE ID = 2;
+UPDATE klasse0815a SET note2 = 6 WHERE ID = 3;
+UPDATE klasse0815a SET note2 = 3 WHERE ID = 5;
+UPDATE klasse0815a SET note2 = 4 WHERE ID = 6;
+UPDATE klasse0815a SET note2 = 1 WHERE ID = 7;
+UPDATE klasse0815a SET note2 = 4 WHERE ID = 8;
+SELECT * FROM klasse0815a;
+SELECT * FROM klasse0815a WHERE (note1 < 4 AND note2 < 4);
+

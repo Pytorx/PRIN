@@ -1,0 +1,74 @@
+
+# ---- Vorbereitung (Lösung einer früheren Aufgabe, welche bereits besprochen wurde)
+
+DROP DATABASE IF EXISTS verwaltung;
+
+CREATE DATABASE verwaltung;
+use verwaltung;
+
+CREATE TABLE abteilung (abteilungsnummer INT NOT NULL AUTO_INCREMENT, abteilungsname VARCHAR(20), PRIMARY KEY (abteilungsnummer)) ENGINE=InnoDB;
+INSERT INTO abteilung (abteilungsname) VALUES ("Datenbankentwicklung");
+INSERT INTO abteilung (abteilungsname) VALUES ("Programmierung");
+
+CREATE TABLE personal (personalnummer INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), abteilungsnummer INT, PRIMARY KEY (personalnummer) , FOREIGN KEY (abteilungsnummer) REFERENCES abteilung(abteilungsnummer)
+ON DELETE NO ACTION) ENGINE=InnoDB;
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Harkonnen",1);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Schneider",2);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Schlämmer",2);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Hoppenstedt",1);
+
+CREATE TABLE projekt (projektnummer INT NOT NULL AUTO_INCREMENT, projektname VARCHAR(20), PRIMARY KEY (projektnummer)) ENGINE=InnoDB;
+INSERT INTO projekt (projektname) VALUES ("A");
+INSERT INTO projekt (projektname) VALUES ("B");
+INSERT INTO projekt (projektname) VALUES ("C");
+
+CREATE TABLE personalProjekt (personalnummer INT NOT NULL, projektnummer INT NOT NULL, projektstunden INT, PRIMARY KEY (personalnummer, projektnummer), FOREIGN KEY (projektnummer) REFERENCES projekt(projektnummer), FOREIGN KEY (personalnummer) REFERENCES personal(personalnummer)ON DELETE NO ACTION)ENGINE=InnoDB;
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (1,1,60);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (1,2,40);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (2,3,100);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,1,20);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,2,50);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,3,30);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (4,1,80);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (4,3,20);
+
+SELECT * FROM personal;
+SELECT * FROM personalProjekt;
+SELECT * FROM projekt;
+SELECT * FROM abteilung;
+
+
+
+
+# ----- A U F G A B E  1 -----
+
+# https://www.1keydata.com/de/sql/sql-group-by.php
+
+# https://www.1keydata.com/de/sql/sql-having.php
+
+
+
+
+# ----- A U F G A B E  2 -----
+
+SELECT projektnummer, SUM(projektstunden) FROM personalProjekt GROUP BY projektnummer;
+
+SELECT projektnummer, SUM(projektstunden) FROM personalProjekt GROUP BY projektnummer HAVING SUM(projektstunden) >= 150;
+
+SELECT personalnummer, SUM(projektstunden) FROM personalProjekt GROUP BY personalnummer;
+
+SELECT abteilungsnummer, SUM(projektstunden) FROM (personalProjekt INNER JOIN personal USING(personalnummer)) GROUP BY abteilungsnummer;
+
+SELECT abteilungsname, SUM(projektstunden) FROM ((personalProjekt INNER JOIN personal USING(personalnummer)) INNER JOIN abteilung USING(abteilungsnummer)) GROUP BY abteilungsname;
+
+
+
+# ----- A U F G A B E  3 -----
+
+# folgende Anweisung muss eine Fehlermeldung erzeugen, weil die ref. Integrität verletzt wird:
+DELETE FROM projekt where projekt.projektname = "B";
+
+# richtige Vorgehensweise:
+DELETE FROM personalProjekt WHERE personalProjekt.projektnummer = (SELECT projekt.projektnummer FROM projekt WHERE projekt.projektname = "B");
+DELETE FROM projekt where projekt.projektname = "B";
+

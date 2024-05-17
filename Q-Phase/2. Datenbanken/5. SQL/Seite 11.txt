@@ -1,0 +1,97 @@
+
+DROP DATABASE IF EXISTS  baumarkt;
+CREATE DATABASE baumarkt;
+use baumarkt;
+
+CREATE TABLE artikel (artnr INT NOT NULL AUTO_INCREMENT, artbez VARCHAR(20), preis DOUBLE (8,2), PRIMARY KEY (artnr)) ENGINE=InnoDB; 
+
+CREATE TABLE kunde (kdnr INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), plz VARCHAR(5), PRIMARY KEY (kdnr)) ENGINE=InnoDB;
+
+CREATE TABLE auftrag (aufnr INT NOT NULL AUTO_INCREMENT, kdnr INT, aufDatum DATE, PRIMARY KEY (aufnr),FOREIGN KEY (kdnr) REFERENCES kunde(kdnr) 
+ON DELETE NO ACTION) ENGINE=InnoDB;
+
+CREATE TABLE auftragArtikel (aufnr INT, artnr INT, menge INT, PRIMARY KEY (aufnr, artnr),FOREIGN KEY (aufnr) REFERENCES auftrag(aufnr)ON DELETE NO ACTION, FOREIGN KEY (artnr) REFERENCES artikel(artnr) 
+ON DELETE NO ACTION) ENGINE=InnoDB;
+
+
+INSERT INTO artikel (artbez, preis) VALUES ("Stahlrohrtisch", 75.50);
+INSERT INTO artikel (artbez, preis) VALUES ("Kombizange", 8.99);
+INSERT INTO artikel (artbez, preis) VALUES ("Rundzange", 18.25);
+INSERT INTO artikel (artbez, preis) VALUES ("Abisolierzange", 21.35);
+INSERT INTO artikel (artbez, preis) VALUES ("Laubsäge", 18.99);
+INSERT INTO artikel (artbez, preis) VALUES ("Phasenprüfer", 1.99);
+INSERT INTO artikel (artbez, preis) VALUES ("Schraubenzieher", 0.99);
+INSERT INTO artikel (artbez, preis) VALUES ("Feile", 4.99);
+
+INSERT INTO kunde (name, plz) VALUES ("Schinder & Hannes", 54321);
+INSERT INTO kunde (name, plz) VALUES ("Super Mario & Luigi", 12345);
+INSERT INTO kunde (name, plz) VALUES ("Flach & Zange", 54321);
+
+INSERT INTO auftrag (kdnr, aufDatum) VALUES (3,'2008-09-11');
+INSERT INTO auftrag (kdnr, aufDatum) VALUES (1,'2008-09-19');
+INSERT INTO auftrag (kdnr, aufDatum) VALUES (3,'2008-09-22');
+INSERT INTO auftrag (kdnr, aufDatum) VALUES (2,'2008-09-30');
+
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (1,2,20);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (1,3,10);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (1,6,30);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (2,1,2);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (2,2,7);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (2,7,1);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (2,8,2);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (3,7,5);
+INSERT INTO auftragArtikel (aufnr, artnr, menge) VALUES (4,8,5);
+
+SELECT * FROM artikel;
+SELECT * FROM kunde;
+SELECT * FROM auftrag;
+SELECT * FROM auftragArtikel;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

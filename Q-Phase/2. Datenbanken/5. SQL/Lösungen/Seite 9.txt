@@ -1,0 +1,64 @@
+
+DROP DATABASE IF EXISTS verwaltung;
+
+# ----- A U F G A B E  1 -----
+
+CREATE DATABASE verwaltung;
+use verwaltung;
+# Die Reihenfolge der Erstellung der Tabellen ist wichtig, sonnst meckert das DBMS !!!
+CREATE TABLE abteilung (abteilungsnummer INT NOT NULL AUTO_INCREMENT, abteilungsname VARCHAR(20), PRIMARY KEY (abteilungsnummer)) ENGINE=InnoDB;
+INSERT INTO abteilung (abteilungsname) VALUES ("Datenbankentwicklung");
+INSERT INTO abteilung (abteilungsname) VALUES ("Programmierung");
+
+CREATE TABLE personal (personalnummer INT NOT NULL AUTO_INCREMENT, name VARCHAR(20), abteilungsnummer INT, PRIMARY KEY (personalnummer) , FOREIGN KEY (abteilungsnummer) REFERENCES abteilung(abteilungsnummer)
+ON DELETE NO ACTION) ENGINE=InnoDB;
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Harkonnen",1);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Schneider",2);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Schlämmer",2);
+INSERT INTO personal (name, abteilungsnummer) VALUES ("Hoppenstedt",1);
+
+CREATE TABLE projekt (projektnummer INT NOT NULL AUTO_INCREMENT, projektname VARCHAR(20), PRIMARY KEY (projektnummer)) ENGINE=InnoDB;
+INSERT INTO projekt (projektname) VALUES ("A");
+INSERT INTO projekt (projektname) VALUES ("B");
+INSERT INTO projekt (projektname) VALUES ("C");
+
+CREATE TABLE personalProjekt (personalnummer INT NOT NULL, projektnummer INT NOT NULL, projektstunden INT, PRIMARY KEY (personalnummer, projektnummer), FOREIGN KEY (projektnummer) REFERENCES projekt(projektnummer), FOREIGN KEY (personalnummer) REFERENCES personal(personalnummer)ON DELETE NO ACTION)ENGINE=InnoDB;
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (1,1,60);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (1,2,40);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (2,3,100);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,1,20);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,2,50);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (3,3,30);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (4,1,80);
+INSERT INTO personalProjekt (personalnummer, projektnummer, projektstunden) VALUES (4,3,20);
+
+SELECT * FROM personal;
+SELECT * FROM personalProjekt;
+SELECT * FROM projekt;
+SELECT * FROM abteilung;
+
+
+# ----- A U F G A B E  2 -----
+
+# a) mit Originalattributen
+SELECT personalnummer, name, abteilungsname FROM (personal INNER JOIN abteilung USING(abteilungsnummer)) ORDER BY name;
+
+# b) mit Spalten-Alias
+SELECT personalnummer AS PersNr, name AS Nachname, abteilungsname AS Abteilung FROM (personal INNER JOIN abteilung USING(abteilungsnummer)) ORDER BY name;
+
+
+# ----- A U F G A B E  3 -----
+
+# a)
+SELECT projektnummer FROM (personal INNER JOIN personalProjekt USING(personalnummer))WHERE personal.name="Hoppenstedt";
+
+# b)
+SELECT projektname FROM ((personal INNER JOIN personalProjekt USING(personalnummer))INNER JOIN projekt USING(projektnummer))WHERE personal.name="Hoppenstedt";
+
+# c)
+SELECT projektname AS "Projekte von Hoppenstedt", projektstunden AS "Stunden" FROM ((personal INNER JOIN personalProjekt USING(personalnummer))INNER JOIN projekt USING(projektnummer))WHERE personal.name="Hoppenstedt";
+
+# d)
+SELECT SUM(projektstunden) FROM ((personal INNER JOIN personalProjekt USING(personalnummer))INNER JOIN projekt USING(projektnummer))WHERE personal.name="Hoppenstedt";
+
+
